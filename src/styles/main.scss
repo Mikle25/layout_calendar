@@ -1,3 +1,68 @@
+$margin-between: 1px;
+$box-size: 100px;
+$font-stack: arial, sans-serif;
+$large-font-size: 30px;
+$box-bg-color: #eee;
+$week-days: (
+  "mon" : 0,
+  "tue" : 1,
+  "wed" : 2,
+  "thu" : 3,
+  "fri" : 4,
+  "sat" : 5,
+  "sun" : 6
+);
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  font-family: $font-stack;
+}
+
+.calendar {
+  width: 7 * ($margin-between + $box-size);
+
+  display: flex;
+  flex-flow: row wrap;
+
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $box-size;
+    height: $box-size;
+    border: 1px solid black;
+    background-color: $box-bg-color;
+    margin: 0 $margin-between $margin-between 0;
+    position: relative;
+    font-size: $large-font-size;
+  }
+
+  > div:hover {
+    cursor: pointer;
+    background-color: pink;
+    transform: translateY(-20px);
+    transition: 0.5s;
+  }
+}
+
+@for $i from 1 through 31 {
+  .calendar :nth-child(#{$i})::after {
+    content: "#{$i}";
+  }
+}
+
+@each $week-days, $i in $week-days {
+  .calendar-#{$week-days} :first-of-type {
+    margin-left: $i * ($box-size + $margin-between);
+  }
+}
+
+.calendar-28 :nth-child(n + 29),
+.calendar-29 :nth-child(n + 30),
+.calendar-30 :nth-child(n + 31) {
+  display: none;
 }
